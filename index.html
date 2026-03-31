@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for Reisya ❤️</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-pink: #ff85a1;
+            --soft-yellow: #fff5b7;
+            --text-brown: #5d4037;
+            --white-glass: rgba(255, 255, 255, 0.85);
+            --tulip-color: #ff6b6b;
+            --stem-color: #2d6a4f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, #fff8e1 100%);
+            font-family: 'Quicksand', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-brown);
+        }
+
+        /* --- Container Utama (Sangat Berpusat) --- */
+        .story-container {
+            width: 90%;
+            max-width: 320px;
+            height: 500px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            background: var(--white-glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.15);
+            border: 2px solid white;
+            display: none; /* Default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        .card.active { display: flex; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- CSS UNTUK GELEMBUNG (BUBBLES) --- */
+        .bubble-group {
+            position: relative;
+            width: 260px; /* Area zigzag */
+            height: 180px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid var(--primary-pink);
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: floatBubble 4s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .bubble img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Ukuran dan Posisi Zigzag */
+        .bubble:nth-child(1) { 
+            width: 70px; height: 70px; 
+            top: 0; left: 20px; 
+            animation-delay: 0s; 
+        }
+
+        .bubble:nth-child(2) { 
+            width: 110px; height: 110px; 
+            top: 30px; right: 10px; 
+            animation-delay: 0.5s; 
+        }
+
+        .bubble:nth-child(3) { 
+            width: 80px; height: 80px; 
+            bottom: 0; left: 50px; 
+            animation-delay: 1.2s; 
+        }
+
+        /* Animasi Mengapung Halus */
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        /* Hover effect agar gelembung bereaksi saat disentuh */
+        .bubble:hover {
+            transform: scale(1.1) z-index(10);
+        }
+
+        /* --- Elemen Visual --- */
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid var(--primary-pink);
+            margin-bottom: 10px;
+            overflow: hidden;
+            background: #eee;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--primary-pink);
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+        }
+
+        .message {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .btn-next {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 133, 161, 0.4);
+        }
+        .btn-next:hover { transform: translateY(-3px); background: #f06292; }
+
+        /* --- Kado & Tulip Section (Revisi Tata Letak Bunga & Kupu-kupu) --- */
+        #gift-container {
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-top: 15px;
+        }
+        #gift-container:hover { transform: scale(1.1); }
+        .gift-box { font-size: 70px; }
+
+        #tulip-final {
+            display: none;
+            margin-top: 20px;
+            position: relative; /* Diperlukan untuk koordinat absolut di dalamnya */
+            width: 100%;
+            height: 280px; /* Atur tinggi kontainer bunga disesuaikan */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: scale(0.5); /* Awalnya diperkecil untuk pop-up */
+        }
+
+        /* Kelas Aktif untuk Animasi Pop-Up Bunga */
+        .tulip-active {
+            display: flex;
+            animation: tulipPopUp 0.8s ease-out forwards;
+        }
+
+        @keyframes tulipPopUp {
+            from { opacity: 0; transform: scale(0.5) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Kontainer untuk kupu-kupu */
+        #butterfly-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Jangan biarkan kupu-kupu memblokir klik pada bunga */
+            overflow: hidden; /* Sembunyikan kupu-kupu yang keluar dari batas bunga */
+        }
+
+        .tulip {
+            position: relative;
+            transform-origin: bottom center;
+            animation: sway 3s ease-in-out infinite;
+            cursor: pointer;
+            margin-top: auto; /* Pusatkan bunga di bagian bawah kontainer */
+            margin-bottom: 15px;
+        }
+
+        .flower { position: relative; width: 45px; height: 55px; z-index: 2; margin: 0 auto; }
+        .petal {
+            position: absolute;
+            background: var(--tulip-color);
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            transition: background 0.5s ease;
+        }
+        .petal.middle { width: 38px; height: 50px; left: 3.5px; z-index: 2; }
+        .petal.left { width: 31px; height: 45px; left: -11px; transform: rotate(-25deg); filter: brightness(0.9); }
+        .petal.right { width: 31px; height: 45px; right: -11px; transform: rotate(25deg); filter: brightness(0.9); }
+        
+        .stem {
+            width: 5px;
+            height: 90px;
+            background: var(--stem-color);
+            margin: -4px auto 0;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        /* Revisi Daun (Menempel Ketat pada Tangkai) */
+        .leaf {
+            position: absolute;
+            width: 28px;
+            height: 55px;
+            background: var(--stem-color);
+            border-radius: 0 100% 0 100%;
+            bottom: 25px;
+            left: -11px; /* Posisi daun lebih dekat ke tangkai */
+            transform: rotate(-15deg);
+        }
+
+        /* --- Kupu-kupu (Revisi Animasi & Posisi) --- */
+        .butterfly {
+            position: absolute;
+            font-size: 18px;
+            pointer-events: none;
+            animation: fly-around 4s infinite linear;
+            z-index: 5;
+            top: -35px; /* Posisi awal di atas bunga */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes fly-around {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            50% { transform: translate(25px, -35px) rotate(20deg); }
+            80% { opacity: 1; }
+            100% { transform: translate(-18px, -70px) rotate(-20deg); opacity: 0; }
+        }
+
+        /* --- Animasi --- */
+        @keyframes sway {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .floating { position: absolute; pointer-events: none; z-index: 1; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        .heart-pop {
+            position: absolute;
+            color: #ffb7b7;
+            font-size: 14px;
+            pointer-events: none;
+            animation: heart-fly 2s linear forwards;
+        }
+        @keyframes heart-fly {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-90px) scale(1.5); opacity: 0; }
+        }
+
+        .music-info {
+            position: fixed; top: 15px; font-size: 0.7rem;
+            background: rgba(255,255,255,0.5); padding: 4px 12px; border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="music-info">🎵 My Cutie Pie - Cantik</div>
+    <audio id="backsound" loop><source src="Kahitna - Cantik.mp3" type="audio/mpeg"></audio>
+
+    <div class="story-container">
+        
+        <div class="card active" id="p1">
+            <div class="photo-frame"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 23.17.31 (2).jpeg" alt="Foto 1"></div>
+            <h1>Halo, My Cutie Pie!</h1>
+            <p class="message">Ada pesan kecil di hari ulang tahunmu. Buka yuk?</p>
+            <button class="btn-next" onclick="nextPage(2)">Buka Pesan 🌸</button>
+        </div>
+
+        <!-- <div class="card" id="p2">
+            <div class="photo-frame"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 22.25.19.jpeg" alt="Foto 2"></div>
+            <p class="message">
+                Setiap hari bersamamu itu rasanya kayak dengerin lagu favorit yang nggak pernah ngebosenin. Senyum kamu selalu jadi bagian terbaik di hariku.
+            </p>
+            <button class="btn-next" onclick="nextPage(3)">Lanjut...</button>
+        </div> -->
+
+        <div class="card" id="p2">
+            <div class="bubble-group">
+                <div class="bubble"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 23.17.32 (1).jpeg"></div>
+                <div class="bubble"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 22.25.19.jpeg"></div>
+                <div class="bubble"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 23.17.30 (2).jpeg"></div>
+            </div>
+            <p class="message">
+                Setiap hari bersamamu itu rasanya kayak dengerin lagu favorit yang nggak pernah ngebosenin. Senyum kamu selalu jadi bagian terbaik di hariku.
+            </p>
+            <button class="btn-next" onclick="nextPage(3)">Lanjut...</button>
+        </div>
+
+        <!-- <div class="card" id="p3">
+            <div class="photo-frame"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 22.25.18 (1).jpeg" alt="Foto 3"></div>
+            <p class="message">
+                Bukan cuma karena wajahmu, tapi karena kebaikanmu yang bikin aku jatuh hati berkali-kali. Makasih ya sudah jadi orang yang paling manis.
+            </p>
+            <button class="btn-next" onclick="nextPage(4)">And Finally...</button>
+        </div> -->
+
+        <div class="card" id="p3">
+            <div class="bubble-group">
+                <div class="bubble"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 22.25.18 (1).jpeg"></div>
+                <div class="bubble"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 23.17.32.jpeg"></div>
+                <div class="bubble"><img src="C:\Users\Administrator\Downloads\WEB ULTAH RERE\WhatsApp Image 2026-03-31 at 23.17.31 (1).jpeg"></div>
+            </div>
+            <p class="message">
+                Bukan cuma karena wajahmu, tapi karena kebaikanmu yang bikin aku jatuh hati berkali-kali. Makasih ya sudah jadi orang yang paling manis.
+            </p>
+            <button class="btn-next" onclick="nextPage(4)">And Finally...</button>
+        </div>
+
+        <div class="card" id="p4">
+            <h1 style="font-size: 2.0rem; margin-bottom: 10px;">Happy Birthday! 🎂</h1>
+            <p class="message" style="margin-bottom: 10px;">Selamat ulang tahun, Reisyakuuuu. Ini ada kado kecil buat kamu...</p>
+            
+            <div id="gift-container" onclick="openGift()">
+                <div class="gift-box">🎁</div>
+                <p style="font-size: 0.75rem; color: #aaa;">(Klik kadonya)</p>
+            </div>
+
+            <div id="tulip-final">
+                <div class="tulip" id="tulipClick">
+                    <div class="flower">
+                        <div class="petal middle"></div>
+                        <div class="petal left"></div>
+                        <div class="petal right"></div>
+                    </div>
+                    <div class="stem"></div>
+                    <div class="leaf"></div>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.75rem; color: #888;">Bunga ini nggak akan pernah layu, <br>sama seperti sayangnya aku ke kamu. ❤️</p>
+                <div id="butterfly-container"></div>
+                
+            </div>
+            
+            <button class="btn-next" style="margin-top: 15px; display: none;" id="btn-reset" onclick="location.reload()">Ulangi Cerita? ✨</button>
+        </div>
+
+    </div>
+
+    <script>
+        let current = 1;
+        const bgMusic = document.getElementById('backsound');
+        const colors = ['#ff6b6b', '#fbc2eb', '#ff9a9e', '#f6ad55', '#ed64a6', '#faf089'];
+        let colorIndex = 0;
+
+        function nextPage(num) {
+            if(current === 1) {
+                bgMusic.play().catch(e => console.log("Perlu interaksi user"));
+                startFlowerRain();
+            }
+            document.getElementById(`p${current}`).classList.remove('active');
+            current = num;
+            document.getElementById(`p${current}`).classList.add('active');
+        }
+
+        function openGift() {
+            // Sembunyikan kado
+            document.getElementById('gift-container').style.display = 'none';
+            const tulipSection = document.getElementById('tulip-final');
+            
+            // Tampilkan bunga dengan menambahkan kelas `.tulip-active`
+            setTimeout(() => {
+                tulipSection.classList.add('tulip-active');
+                document.getElementById('btn-reset').style.display = 'inline-block';
+            }, 100);
+        }
+
+        // Logika Tulip Klik (Ganti Warna, Hati, & SEKARANG Kupu-kupu)
+        const tulip = document.getElementById('tulipClick');
+        tulip.addEventListener('click', (e) => {
+            // 1. Ganti warna
+            colorIndex = (colorIndex + 1) % colors.length;
+            document.documentElement.style.setProperty('--tulip-color', colors[colorIndex]);
+
+            // 2. Animasi Pop
+            tulip.style.transform = 'scale(1.2)';
+            setTimeout(() => { tulip.style.transform = 'scale(1)'; }, 200);
+
+            // 3. Love Pop Up
+            createHeart(e.clientX, e.clientY);
+
+            // 4. Kupu-kupu Pop Up (Baru: hanya saat bunga diklik)
+            createButterfly();
+        });
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart-pop';
+            heart.style.left = (x - 8) + 'px';
+            heart.style.top = (y - 8) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2000);
+        }
+
+        // Logika Kupu-kupu (Membuat dan menempatkan di atas bunga)
+        function createButterfly() {
+            const b = document.createElement('div');
+            b.innerHTML = '🦋';
+            b.className = 'butterfly';
+            
+            const butterflyContainer = document.getElementById('butterfly-container');
+            const containerWidth = butterflyContainer.offsetWidth;
+            const containerHeight = butterflyContainer.offsetHeight;
+            
+            b.style.left = (Math.random() * containerWidth * 0.8 + containerWidth * 0.1) + 'px'; // Sebarkan di tengah 80%
+            b.style.top = (Math.random() * containerHeight * 0.3) + 'px'; // Di atas 30% kontainer
+
+            butterflyContainer.appendChild(b);
+            setTimeout(() => b.remove(), 4000); // Hapus setelah animasi terbang selesai
+        }
+
+        function startFlowerRain() {
+            const emojis = ['🌸', '🌺', '💖', '✨', '🌼'];
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'floating';
+                el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.top = '-50px';
+                el.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                el.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 6000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
